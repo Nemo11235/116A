@@ -44,10 +44,10 @@ public class TestArea {
 			
 			System.out.println("------------------------------------------------------------\n"
 					+ "1. Get normal of a vector\n"
-					+ "2. Get cross product of 2 vectors\n"
+					+ "2. Get cross product of 2 vectors (normal of the triangle) (ambient color)\n"
 					+ "3. Get normal by 3 vertex\n"
-					+ "4. Get diffuse lighting\n"
-					+ "5. Get specular lighting\n"
+					+ "4. Get diffuse lighting (diffuse color)\n"
+					+ "5. Get specular lighting (specular color) \n"
 					+ "");
 			choice = scan.nextInt();
 			
