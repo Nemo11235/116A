@@ -127,13 +127,10 @@ public class TestArea {
 		Vec speM = new Vec();
 			
 		System.out.println("V = " + viewer.toString() + "-" + v.toString());
-		Vec.normalize(V);
-		
-		System.out.println(V.toString() + "," + L.toString());
-		 
+		Vec.normalize(V); 
 		System.out.println("Normalized V: " + V.toString());
 		Vec H = new Vec(V.x + L.x, V.y + L.y, V.z + L.z);
-		//Vec.normalize(H);
+
 		System.out.println("H = L + V = " + H.toString());
 		Vec.normalize(H);
 		System.out.println("Normalized H: " + H.toString());
@@ -144,7 +141,8 @@ public class TestArea {
 		System.out.println("= " + n2 + "*" + speL.toString());
 		speL.setVec(n2*speL.x, n2*speL.y, n2*speL.z);
 		System.out.println("= " + speL.toString());	
-		}
+	}
+
 	
 }
 
