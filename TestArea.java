@@ -1,3 +1,5 @@
+// Course: CS116 A
+
 import java.util.*;
 
 public class TestArea {
@@ -33,6 +35,9 @@ public class TestArea {
 				break;
 			case 4:
 				getDiffuse();
+				break;
+			case 5:
+				getSpecular();
 				break;
 			
 			}
@@ -88,7 +93,7 @@ public class TestArea {
 		System.out.println("Diffuse color of light: ");
 		Vec difL = new Vec();
 		Vec L = new Vec(light.x - v.x, light.y - v.y, light.z - v.z);
-		System.out.println("L = " + light.toString() + "-" + "v.toString");
+		System.out.println("L = " + light.toString() + "-" + v.toString());
 		Vec.normalize(L);
 		Vec.normalize(N);
 		System.out.println("Normalized L = " + L.toString());
@@ -98,8 +103,46 @@ public class TestArea {
 		double nl = L.dotProduct(N);
 		System.out.println("= " + nl + "*" + difL.toString());
 		difL.setVec(nl*difL.x, nl*difL.y, nl*difL.z);
-		System.out.println("= " + difL.toString());
-		
-		
+		System.out.println("= " + difL.toString());	
 	}
+	
+	public static void getSpecular() {
+		System.out.println("the viewer is at position: ");
+		Vec viewer = new Vec();
+		System.out.println("Vertex(V0 V1 or V2...): ");
+		Vec v = new Vec();
+		Vec V = new Vec(viewer.x - v.x, viewer.y - v.y, viewer.z - v.z);
+		System.out.println("Normal vector of the surface:");
+		Vec N = new Vec();
+		
+		//from light -- diffuse part
+		System.out.println("Position of light: ");
+		Vec L = new Vec();
+		Vec.normalize(L);
+		
+		System.out.println("Specular color of light: ");
+		Vec speL = new Vec();
+		System.out.println("Specular color of material: ");
+		Vec speM = new Vec();
+			
+		System.out.println("V = " + viewer.toString() + "-" + v.toString());
+		Vec.normalize(V);
+		
+		System.out.println(V.toString() + "," + L.toString());
+		 
+		System.out.println("Normalized V: " + V.toString());
+		Vec H = new Vec(V.x + L.x, V.y + L.y, V.z + L.z);
+		//Vec.normalize(H);
+		System.out.println("H = L + V = " + H.toString());
+		
+		Vec.normalize(H);
+		System.out.println("Specular color = N*H * " + speL.toString() + "x" + speM);
+		speL.setVec(speL.x * speM.x, speL.y * speM.y, speL.z * speM.z);
+		double n2 = L.dotProduct(N);
+		System.out.println("= " + n2 + "*" + speL.toString());
+		speL.setVec(n2*speL.x, n2*speL.y, n2*speL.z);
+		System.out.println("= " + speL.toString());	
+		}
+	
 }
+
