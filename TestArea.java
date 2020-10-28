@@ -98,7 +98,7 @@ public class TestArea {
 		Vec.normalize(N);
 		System.out.println("Normalized L = " + L.toString());
 		System.out.println("Normalized N = " + N.toString());
-		System.out.println("Diffuse color = N*L * " + difM.toString() + "x" + difL);
+		System.out.println("Diffuse color = N.L * " + difM.toString() + "x" + difL);
 		difL.setVec(difL.x * difM.x, difL.y * difM.y, difL.z * difM.z);
 		double nl = L.dotProduct(N);
 		System.out.println("= " + nl + "*" + difL.toString());
@@ -114,6 +114,7 @@ public class TestArea {
 		Vec V = new Vec(viewer.x - v.x, viewer.y - v.y, viewer.z - v.z);
 		System.out.println("Normal vector of the surface:");
 		Vec N = new Vec();
+		Vec.normalize(N);
 		
 		//from light -- diffuse part
 		System.out.println("Position of light: ");
@@ -134,15 +135,17 @@ public class TestArea {
 		Vec H = new Vec(V.x + L.x, V.y + L.y, V.z + L.z);
 		//Vec.normalize(H);
 		System.out.println("H = L + V = " + H.toString());
-		
 		Vec.normalize(H);
-		System.out.println("Specular color = N*H * " + speL.toString() + "x" + speM);
+		System.out.println("Normalized H: " + H.toString());
+		
+		System.out.println("Specular color = N.H * " + speL.toString() + "x" + speM.toString());
 		speL.setVec(speL.x * speM.x, speL.y * speM.y, speL.z * speM.z);
-		double n2 = L.dotProduct(N);
+		double n2 = N.dotProduct(H);
 		System.out.println("= " + n2 + "*" + speL.toString());
 		speL.setVec(n2*speL.x, n2*speL.y, n2*speL.z);
 		System.out.println("= " + speL.toString());	
 		}
 	
 }
+
 
