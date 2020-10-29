@@ -56,6 +56,9 @@ public class Vec {
 		v.z = v.z / length;
 	}
 	
+	public double getNorm() 
+	{	return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));	}
+	
 	// this function prints a vector.
 	public static void print(Vec v)
 	{	System.out.println("(" + v.x + ", " + v.y + ", " + v.z + ")");	}
