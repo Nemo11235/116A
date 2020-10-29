@@ -148,6 +148,49 @@ public class TestArea {
 		System.out.println("= " + speL.toString());	
 	}
 	
+	public static void getRaySphere() {
+		// get camera position (P)
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Camera position: ");
+		Vec P = new Vec();
+		
+		// get the direction of ray(pixel - camera) then normalize it (D)
+		System.out.println("Pixel position: ");
+		Vec p = new Vec();
+		Vec D = new Vec(p.x - P.x, p.y - P.y, p.z - P.z);
+		System.out.println("D = P - pixel = " + D.toString());
+		Vec.normalize(D);
+		System.out.println("Normalize D = " +  D.toString());
+		
+		// get center of sphere
+		System.out.println("Center of sphere: ");
+		Vec C = new Vec();
+		System.out.println("Radius of the sphere: ");
+		Double radius = scan.nextDouble();
+		
+		// get the equation of X(t)
+		System.out.println("X(t) = " + P.toString() + " + t" + D.toString());
+		
+		
+		Vec M = new Vec(P.x - C.x, P.y - C.y, P.z - C.z);
+		System.out.println("M = P - C = " + P.toString() + " - " + C.toString() + " = " + M.toString());
+		
+		// get the discriminant
+		System.out.println("D.M = " + D.dotProduct(M));
+		Double discriminant = Math.pow(D.dotProduct(M), 2) - (Math.pow(M.getNorm(), 2) - Math.pow(radius, 2));
+		System.out.println("Discriminant d = " + discriminant);
+		
+		// solve for t
+		if (discriminant > 0) {
+			Double t1, t2;
+			t1 =  - D.dotProduct(M) + Math.sqrt(discriminant);
+			t2 = - D.dotProduct(M) - Math.sqrt(discriminant);
+			System.out.println("t = " + t1 + " and " + t2);
+		} else {
+			System.out.println("The discriminant is less than 0, therefore the ray doesn't go throught the sphere, no real solution for t");
+		}
+	}
+	
 	//Question 4 for get Ray-Triangle
 	public static void getRayTriangle()
 	{
