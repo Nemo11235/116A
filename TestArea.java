@@ -1,13 +1,11 @@
-// Course: CS116 A
-
 import java.util.*;
 
 public class TestArea {
 
 	public static void main(String[] args) {
 
-		Vec v1 = new Vec(0.6,0.8,0);
-		Vec v2 = new Vec(0,1,0);
+//		Vec v1 = new Vec(0.6,0.8,0);
+//		Vec v2 = new Vec(0,1,0);
 //		// test crossProduct
 //		System.out.println("Cross Product: ");
 //		Vec.print(Vec.crossProduct(v1, v2));
@@ -19,7 +17,8 @@ public class TestArea {
 				+ "3. Get normal by 3 vertex\n"
 				+ "4. Get diffuse lighting\n"
 				+ "5. Get specular lighting\n"
-				+ "");
+				+ "6. Ray sphere intersection\n"
+				+ "7. Ray triangle intersection");
 		Scanner scan = new Scanner(System.in);
 		choice = scan.nextInt();
 		while(true) {
@@ -39,20 +38,23 @@ public class TestArea {
 			case 5:
 				getSpecular();
 				break;
-			
+			case 6:
+				getRaySphere();
 			}
 			
 			System.out.println("------------------------------------------------------------\n"
 					+ "1. Get normal of a vector\n"
-					+ "2. Get cross product of 2 vectors (normal of the triangle) (ambient color)\n"
+					+ "2. Get cross product of 2 vectors\n"
 					+ "3. Get normal by 3 vertex\n"
-					+ "4. Get diffuse lighting (diffuse color)\n"
-					+ "5. Get specular lighting (specular color) \n"
-					+ "");
+					+ "4. Get diffuse lighting\n"
+					+ "5. Get specular lighting\n"
+					+ "6. Ray sphere intersection\n"
+					+ "7. Ray triangle intersection");
 			choice = scan.nextInt();
 			
 		}
 	}
+	
 	public static void crossProduct() {
 		Vec v1 = new Vec();
 		Vec v2 = new Vec();
@@ -93,17 +95,17 @@ public class TestArea {
 		System.out.println("Diffuse color of light: ");
 		Vec difL = new Vec();
 		Vec L = new Vec(light.x - v.x, light.y - v.y, light.z - v.z);
-		System.out.println("L = " + light.toString() + "-" + v.toString());
+		System.out.println("L = " + light.toString() + "-" + "v.toString");
 		Vec.normalize(L);
 		Vec.normalize(N);
 		System.out.println("Normalized L = " + L.toString());
 		System.out.println("Normalized N = " + N.toString());
-		System.out.println("Diffuse color = N.L * " + difM.toString() + "x" + difL);
+		System.out.println("Diffuse color = N*L * " + difM.toString() + "x" + difL);
 		difL.setVec(difL.x * difM.x, difL.y * difM.y, difL.z * difM.z);
-		double nl = L.dotProduct(N);
+		double nl = N.dotProduct(L);
 		System.out.println("= " + nl + "*" + difL.toString());
 		difL.setVec(nl*difL.x, nl*difL.y, nl*difL.z);
-		System.out.println("= " + difL.toString());	
+		System.out.println("= " + difL.toString());
 	}
 	
 	public static void getSpecular() {
@@ -114,7 +116,6 @@ public class TestArea {
 		Vec V = new Vec(viewer.x - v.x, viewer.y - v.y, viewer.z - v.z);
 		System.out.println("Normal vector of the surface:");
 		Vec N = new Vec();
-		Vec.normalize(N);
 		
 		//from light -- diffuse part
 		System.out.println("Position of light: ");
@@ -127,23 +128,62 @@ public class TestArea {
 		Vec speM = new Vec();
 			
 		System.out.println("V = " + viewer.toString() + "-" + v.toString());
-		Vec.normalize(V); 
+		Vec.normalize(V);
+		
+		System.out.println(V.toString() + "," + L.toString());
+		 
 		System.out.println("Normalized V: " + V.toString());
 		Vec H = new Vec(V.x + L.x, V.y + L.y, V.z + L.z);
-
+		//Vec.normalize(H);
 		System.out.println("H = L + V = " + H.toString());
-		Vec.normalize(H);
-		System.out.println("Normalized H: " + H.toString());
 		
-		System.out.println("Specular color = N.H * " + speL.toString() + "x" + speM.toString());
+		Vec.normalize(H);
+		System.out.println("Specular color = N*H * " + speL.toString() + "x" + speM);
 		speL.setVec(speL.x * speM.x, speL.y * speM.y, speL.z * speM.z);
-		double n2 = N.dotProduct(H);
+		double n2 = L.dotProduct(N);
 		System.out.println("= " + n2 + "*" + speL.toString());
 		speL.setVec(n2*speL.x, n2*speL.y, n2*speL.z);
 		System.out.println("= " + speL.toString());	
 	}
-
 	
+	public static void getRaySphere() {
+		// get camera position (P)
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Camera position: ");
+		Vec P = new Vec();
+		
+		// get the direction of ray(pixel - camera) then normalize it (D)
+		System.out.println("Pixel position: ");
+		Vec p = new Vec();
+		Vec D = new Vec(p.x - P.x, p.y - P.y, p.z - P.z);
+		System.out.println("D = P - pixel = " + D.toString());
+		Vec.normalize(D);
+		System.out.println("Normalize D = " +  D.toString());
+		
+		// get the equation of X(t)
+		System.out.println("X(t) = " + P.toString() + " + t" + D.toString());
+		
+		// get center of sphere
+		System.out.println("Center of sphere: ");
+		Vec C = new Vec();
+		System.out.println("Radius of the sphere: ");
+		Double radius = scan.nextDouble();
+		Vec M = new Vec(P.x - C.x, P.y - C.y, P.z - C.z);
+		System.out.println("M = P - C = " + P.toString() + " - " + C.toString() + " = " + M.toString());
+		
+		// get the discriminant
+		System.out.println("D.M = " + D.dotProduct(M));
+		Double discriminant = Math.pow(D.dotProduct(M), 2) - (Math.pow(M.getNorm(), 2) - Math.pow(radius, 2));
+		System.out.println("Discriminant d = " + discriminant);
+		
+		// solve for t
+		if (discriminant > 0) {
+			Double t1, t2;
+			t1 =  - D.dotProduct(M) + Math.sqrt(discriminant);
+			t2 = - D.dotProduct(M) - Math.sqrt(discriminant);
+			System.out.println("t = " + t1 + " and " + t2);
+		} else {
+			System.out.println("The discriminant is less than 0, therefore the ray doesn't go throught the sphere, no real solution for t");
+		}
+	}
 }
-
-
